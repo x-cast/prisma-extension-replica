@@ -121,6 +121,10 @@ var readReplicas = (options, configureReplicaClient) => import_extension.Prisma.
         }
         return replicaManager.pickReplica();
       },
+      $listen(event, listener) {
+        ;
+        client.$on(event, listener);
+      },
       async $connect() {
         await Promise.all([client.$connect(), replicaManager.connectAll()]);
       },

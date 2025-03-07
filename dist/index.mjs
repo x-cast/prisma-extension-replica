@@ -95,6 +95,10 @@ var readReplicas = (options, configureReplicaClient) => Prisma.defineExtension((
         }
         return replicaManager.pickReplica();
       },
+      $listen(event, listener) {
+        ;
+        client.$on(event, listener);
+      },
       async $connect() {
         await Promise.all([client.$connect(), replicaManager.connectAll()]);
       },

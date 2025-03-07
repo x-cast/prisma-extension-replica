@@ -66,7 +66,6 @@ export const readReplicas = (options: ReplicasOptions, configureReplicaClient?: 
     }
 
     const replicaManager = new ReplicaManager(replicaManagerOptions)
-
     return client.$extends({
       client: {
         $primary<T extends object>(this: T): Omit<T, '$primary' | '$replica'> {
@@ -89,6 +88,10 @@ export const readReplicas = (options: ReplicasOptions, configureReplicaClient?: 
           }
 
           return replicaManager.pickReplica() as unknown as Omit<T, '$primary' | '$replica'>
+        },
+
+        $listen(event: string, listener: (...args: any[]) => void) {
+          ;(client as any).$on(event, listener)
         },
 
         async $connect() {
